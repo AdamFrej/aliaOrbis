@@ -2,6 +2,7 @@ package pl.waw.frej.games.aliaOrbis;
 
 import org.lwjgl.opengl.Display;
 
+import static pl.waw.frej.games.aliaOrbis.WindowUtils.getConfig;
 import static pl.waw.frej.games.aliaOrbis.WindowUtils.initializeDisplay;
 import static pl.waw.frej.games.aliaOrbis.WindowUtils.renderTriangle;
 
@@ -9,13 +10,11 @@ import static pl.waw.frej.games.aliaOrbis.WindowUtils.renderTriangle;
  * Created by adam on 03.08.14.
  */
 public class MainWindow {
-    private static final int TARGET_WIDTH = 640;
-    private static final int TARGET_HEIGHT = 480;
-    private static final int FRAME_RATE = 120;
+
     private static Timer timer = new Timer();
 
     public static void main(String[] args) {
-        initializeDisplay(TARGET_WIDTH, TARGET_HEIGHT);
+        initializeDisplay(getConfig().getInt("width"), getConfig().getInt("height"),getConfig().getBoolean("fullscreen"));
         boolean gameRunning = true;
 
         timer.init();
@@ -29,7 +28,7 @@ public class MainWindow {
             timer.update();
 
             Display.update();
-            Display.sync(FRAME_RATE);
+            Display.sync(getConfig().getInt("maxFPS"));
 
             if (Display.isCloseRequested()) {
                 gameRunning = false;
