@@ -1,6 +1,8 @@
 package pl.waw.frej.games.aliaOrbis;
 
 import org.lwjgl.opengl.Display;
+import pl.waw.frej.games.aliaOrbis.model.World;
+import pl.waw.frej.games.aliaOrbis.model.WorldFactory;
 
 import static pl.waw.frej.games.aliaOrbis.WindowUtils.getConfig;
 import static pl.waw.frej.games.aliaOrbis.WindowUtils.initializeDisplay;
@@ -18,6 +20,7 @@ public class MainWindow {
         boolean gameRunning = true;
 
         timer.init();
+        World world = WorldFactory.loadWorld();
         while (gameRunning) {
             renderTriangle();
 
