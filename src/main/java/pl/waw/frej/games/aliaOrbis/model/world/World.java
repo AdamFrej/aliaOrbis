@@ -1,4 +1,4 @@
-package pl.waw.frej.games.aliaOrbis.model;
+package pl.waw.frej.games.aliaOrbis.model.world;
 
 import java.util.HashSet;
 import java.util.Set;

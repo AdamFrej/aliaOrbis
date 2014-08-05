@@ -1,8 +1,10 @@
 package pl.waw.frej.games.aliaOrbis;
 
 import org.lwjgl.opengl.Display;
-import pl.waw.frej.games.aliaOrbis.model.World;
-import pl.waw.frej.games.aliaOrbis.model.WorldFactory;
+import pl.waw.frej.games.aliaOrbis.model.world.World;
+import pl.waw.frej.games.aliaOrbis.model.world.WorldFactory;
+
+import java.io.File;
 
 import static pl.waw.frej.games.aliaOrbis.WindowUtils.getConfig;
 import static pl.waw.frej.games.aliaOrbis.WindowUtils.initializeDisplay;
@@ -17,10 +19,10 @@ public class MainWindow {
 
     public static void main(String[] args) {
         initializeDisplay(getConfig().getInt("width"), getConfig().getInt("height"),getConfig().getBoolean("fullscreen"));
-        boolean gameRunning = true;
+        boolean gameRunning = false;
 
         timer.init();
-        World world = WorldFactory.loadWorld();
+        WorldFactory.saveWorld(WorldFactory.createTestWorld());
         while (gameRunning) {
             renderTriangle();
 

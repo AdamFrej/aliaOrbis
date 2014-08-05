@@ -1,7 +1,9 @@
-package pl.waw.frej.games.aliaOrbis.model;
+package pl.waw.frej.games.aliaOrbis.model.world;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.converters.extended.NamedMapConverter;
 import org.apache.commons.io.FileUtils;
+import pl.waw.frej.games.aliaOrbis.model.market.GoodType;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,11 +26,24 @@ public class WorldFactory {
 
     public static void saveWorld(World world) {
         try {
-            FileUtils.writeStringToFile(new File("target/resources/world.xml"), getxStream().toXML(world), StandardCharsets.UTF_8);
+            FileUtils.writeStringToFile(new File("target/resources/save.xml"), getxStream().toXML(world), StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+    }
+
+    public static World createTestWorld(){
+        Pop newPop = new Pop(PopType.FARMERS,1,1);
+        Province newProvince = new Province("prov");
+        newProvince.addPop(newPop);
+        Region newRegion = new Region("reg");
+        newRegion.addProvince(newProvince);
+        State newState = new State("state");
+        newState.addRegion(newRegion);
+        World newWorld = new World();
+        newWorld.addState(newState);
+        return newWorld;
     }
 
     private static XStream getxStream() {
@@ -51,6 +66,9 @@ public class WorldFactory {
 
         xstream.alias("pop", Pop.class);
         xstream.useAttributeFor(Pop.class, "popType");
+
+        NamedMapConverter ownedGoodsConverter = new NamedMapConverter(xstream.getMapper(),"good","type", GoodType.class,"quantity",Integer.class);
+        xstream.registerConverter(ownedGoodsConverter);
         return xstream;
     }
 }

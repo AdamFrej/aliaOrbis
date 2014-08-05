@@ -1,5 +1,6 @@
-package pl.waw.frej.games.aliaOrbis.model;
+package pl.waw.frej.games.aliaOrbis.model.world;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,5 +31,9 @@ public class Region {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<Province> getProvinces() {
+        return Collections.unmodifiableSet(provinces);
     }
 }

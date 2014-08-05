@@ -1,8 +1,14 @@
 Add map drawing
     How to draw borders?
     How to draw the damn thing?
+    How to procede with rivers, cities and stuff.
+
 Add map loading
     How to find bounding box?
+    Maybe create a parmeter pixel of map to number of province for selecting the provinces.
+
 Add save validation
 Add ability to edit and save config
 Add config validation
+
+Make goods and pops defined in files?
