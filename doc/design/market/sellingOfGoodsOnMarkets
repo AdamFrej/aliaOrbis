@@ -1,0 +1,29 @@
+Producenci dóbr(popy) wystawiają oferty sprzedaży w swojej prowincji, w swoim regionie, sąsiednich regionach w tym samym państwie.
+Oferty propagują się do jakiejś określonej odległości, nabierając po drodze kosztów transportu.
+
+Na cenę dobra składa się: koszt pracy, koszt dóbr pierwotnych, koszt transportu, zysk producenta.
+
+Po powstaniu wszystkich ofert sprzedaży. Każdy konsument(pop) ma listę dostępnych ofert per towar. Np dla drewna
+
+sztuk | cena | rodzaj_rynku
+
+100   | 10   | w regionie
+1000  | 15   | prowincjonalny
+200   | 20   | międzyregionalny
+
+Jeśli potrzebuje 300 jednostek drewna to wystawi takie oferty kupna:
+
+sztuk | cena | rodzaj_rynku
+
+100   |  10  | w regionie
+200   |  15  | prowincjonalny
+
+Oferty kupna są realizowane w kolejności: prowincjonalne, w regionie, między regionalne. Oferty sprzedaży mogą być zrealizowane częściowo.
+Nie wszystkie oferty kupna mogą się połączyć. Trzeba wtedy tworzyć kolejne sesje w oparciu o zaktualizowane oferty sprzedaży.
+Trzeba określić metodę zaspokajania ofert kupna: pierwszy bierze ile chce, równomiernie po wszystkich chętnych itp
+
+Przy przekraczaniu granic państw cła. Koszty transportu wypłacane specjalnym popom transportowym(pieniądze nie powstają i nie giną)
+które zatrudniają robotnicze popy lub zużywają materiały w rodzaj statki, drewno itp.
+
+Sezonowość produkcji np. zboże jest produkowane tylko podczas żniw a potem jest sprzedawane z zapasów. Zapasy, nadwyżki sprzedaż tego.
+Spekulanci - kupują kiedy cena niska sprzedają kiedy wysoka ponoszą, koszty przechowywania, stabilizują ceny.

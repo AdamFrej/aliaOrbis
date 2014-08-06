@@ -1,0 +1,63 @@
+W stanie naturalnym w każdej prowincji istnieje:
+    1 pop farmerów.
+    1 minimumRGO małe gospodarstwa rolne.
+Farmerzy wytwarzają w minimumRGO produkty rolne/żywnościowe które zaspokajają ich lifeNeeds. Wszystko co wytworzą(zboże, warzywa, bydło)
+dostają jako pensję(nie dostają faktycznej gotówki). Wytwarzają tyle, żeby zaspokoić life needs na 100% i zostaje im mała nadwyżka.
+Tę nadwyżkę próbują sprzedać na provinceMarket. To RGO zatrudnia 100% chętnych i generuje bazowy koszt pracy.
+W stanie naturalnym jeden pop farmerów jest zatrudniony w 100%, ma lifeNeeds zaspokojone w 100%(pozostałe 0%).
+
+Mechanizm kreacji kosztów pracy na przykładzie 1 popa farmerów, 1 minimumRGO, 2 towarów(żywność i węgiel) i jednego RGO.
+
+Dane:
+Pop farmerów o workPopulation=100;
+1 farmer w minimumRGO produkuje 50 jednostek żywności(jż) a zjada 40jż.
+
+Chwila 0. (Stan naturalny)
+
+Pop Farmerów wyprodukował 5000jż. Zjadł 4000jż. 1000jż wystawił na provinceMarket po 1 cent/sztuka(cena minimalna).
+Cena 1jż=1 cent.
+Dochód popa farmerów 5000 centów = $50. Czyli przychody w mRGO 50$/100osób = 50 centów
+Oferty pracy:
+mRGO 100 50c
+
+Chwila 1. (Wchodzi nowe RGO)
+
+Pojawia się nowa oferta pracy węgloweRGO(wRGO) i wystawia nową ofertę pracy(100, 51c).
+
+mRGO 100 50c | wRGO 100 51c
+
+Część farerów przechodzi z mRGO do wRGO(dokładną ilość powinien określać współczynki inercji
+np 10% obecnie zatrudnionych, lub 10% oferty lub coś na podstawie różnicy stawek)
+
+Powstaje nowy pop: robotnicy:
+
+90 farmerów pracuje w mRGO wytwarza 90*50=4500jż. zjada 90*40=3600jż wystawia 4500-3600=900jż na rynku po 1cent.
+10 robotników pracuje w wRGO coś tam wytwarzją dostaje do właściciel wRGO, w zamian transferuje im 10*51centów 510centów.
+
+robotnicy kupują na rynku 10*40=400jż za 400centów i zostaje im 110centów.
+
+Chwila 2(punkt równowagi).
+
+wRGO daje więcej niż mRGO więc transfer robotników trwa. Popy zmieniają workPopulation: 80 farmwerów, 20 robotników.
+
+80 farmweów wytwarza 4000jż zjada 3200jż wystawia 800 na rynku, 20 robotników kupuje 800 jednostek. i zostaje im w kieszeni 220centów.
+
+Chwila 3. (mRGO zwycięża)
+
+farmerzy: 70, robotnicy 30.
+farmerzy produkują 3500jż zjadają 2800jż 700jż dają na rynek, 30 robotników potrzebuje 30*40=1200jż 700 kupuje na rynku po 1c, brakuje im 500jż
+farmerzy wystawiają na rynek dodatkowe 500jż z zapasów ale ponieważ po poprzedniej cenie(1c) zeszło wszystko wystawiają z ceną o 1c większą czyli 2c
+mają 330 zaoszczędzonych centów a potrzebują 1000c kupują tylko 165jż po 2c. Mają lifeNeeds zaspokojone w 865/1200=72%
+
+Na rynku sprzedano 865jż za 700*1c+165*2c=1030centów.
+Cena 1jż=1030/865 = 1,19 centów. Czyli przychody w mRGO 1,19*50 59,5c.
+
+Oferty pracy:
+
+mRGO 100 59c | wRGO 100 51c
+
+Chwila 4. (wRGO musi podnieść stawkę
+
+Jeśli wRGO nie podniesie stawki robotnicy zaczną przechodzić do popa farmerów aż do uzyskania punktu równowagi(tu trzeba będzie dobrać parametry tak by
+sytuacja się stabilizowała). Jeśli podniesie koszty jedzenia wzrosną dodatkowo tak więc zatrudnienie każdych kolejnych 10 robotników oznacza wzrost opłacalności
+bycia rolnikiem. W ten sposób naturalnie powstają koszty pracy.

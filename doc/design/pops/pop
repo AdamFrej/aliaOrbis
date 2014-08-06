@@ -1,0 +1,10 @@
+Pop to grupa ludzi posiadających ten sam zawód np: farmerzy(robotnicy rolni),
+robotnicy, rzemieśnilicy(robotnicy fabryczni), artisians(rzemieślnicy), ogólnie zawody z Vic2.
+
+Pop posiada dwie liczby oznaczające populację. Populację ludzi pracujących
+i populację wszystkich(pracujący w zawodzie + starcy, dzieci, chorzy, kobiety)
+
+Pop posiada 3 rodzaje potrzeb:
+    life needs (jedzenie, bez tego nie może przetrwać)
+    everyday needs (ciuchy krzesła może jakieś nowe goodsy, tanie ale kupowane dopiero po życiowych)
+    luxury needs(drogie, mało kogo stać kupowane na końcu)
