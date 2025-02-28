@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://5v8ctsvdxr5u"]
+
+[ext_resource type="Script" path="res://web_socket_client.gd" id="1_qbjme"]
+
+[node name="WebSocketClient" type="Node"]
+script = ExtResource("1_qbjme")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MessageInput" type="LineEdit" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SendButton" type="Button" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+text = "Send"
