@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3 uid="uid://b1yq8bkvhqqvl"]
+
+[ext_resource type="Texture2D" uid="uid://ccqh0wn5j1r1c" path="res://assets/textures/paper.png" id="1_tshd8"]
+
+[node name="HistoricalMap" type="Node2D"]
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(461.5, 430)
+scale = Vector2(1.90137, 1.83984)
+texture = ExtResource("1_tshd8")
+
+[node name="MapContents" type="Node2D" parent="."]
+
+[node name="Landmasses" type="Node2D" parent="MapContents"]
+
+[node name="Borders" type="Node2D" parent="MapContents"]
+
+[node name="Cities" type="Node2D" parent="MapContents"]
+
+[node name="Labels" type="Node2D" parent="MapContents"]
+
+[node name="Decorations" type="Node2D" parent="MapContents"]
+
+[node name="Overlay" type="CanvasLayer" parent="."]
