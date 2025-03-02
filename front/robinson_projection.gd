@@ -10,7 +10,11 @@ func project_point(lon_lat: Vector2, central_meridian: float = 0.0) -> Vector2:
     var lat = lon_lat.y
     
     # Normalize longitude relative to central meridian
-    lon = wrapf(lon - central_meridian + 180, 0, 360) - 180
+    lon = lon - central_meridian
+    while lon > 180.0:
+        lon -= 360.0
+    while lon < -180.0:
+        lon += 360.0
     
     var phi = abs(lat) * PI / 180.0
     var i = int(phi * 180 / PI / INTERVALS)
@@ -34,10 +38,19 @@ func project_polygon(polygon: Array, central_meridian: float = 0.0) -> Array:
     var projected = []
     
     for point in polygon:
-        projected.append(project_point(point, central_meridian))
+        # Try to handle coordinates that might be far outside normal range
+        var lon = point.x
+        # Normalize to -180 to 180 range
+        while lon > 180.0:
+            lon -= 360.0
+        while lon < -180.0:
+            lon += 360.0
+            
+        var proj_point = project_point(Vector2(lon, point.y), 0.0)
+        projected.append(proj_point)
         
     return projected
-    
+
 func project_polygon_continuous(polygon: Array, central_meridian: float = 0.0) -> Array:
     var projected = []
     var prev_point = null

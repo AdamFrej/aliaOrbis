@@ -2,7 +2,7 @@ extends Camera2D
 
 var movement_speed = 500
 var min_zoom = 0.05  # Changed from 0.1 to allow closer zooming
-var max_zoom = 5.0
+var max_zoom = 500.0
 var zoom_speed = 0.08  # Slightly reduced for smoother zooming
 var drag_active = false
 
