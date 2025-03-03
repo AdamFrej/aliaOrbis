@@ -50,8 +50,6 @@ func calculate_projection_bounds(geojson_data):
             max_x = max(max_x, point.x)
             min_y = min(min_y, point.y)
             max_y = max(max_y, point.y)
-
-    print("Coordinate bounds - X: ", min_x, " to ", max_x, " | Y: ", min_y, " to ", max_y)
     return {"min_x": min_x, "max_x": max_x, "min_y": min_y, "max_y": max_y}
 
 func adjust_bounds_for_aspect_ratio(bounds, viewport_aspect):

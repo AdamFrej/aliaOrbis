@@ -3,9 +3,9 @@ extends MeshInstance2D
 ## Constants for map rendering
 const TEXTURE_WIDTH = 16384
 const MARGIN_FACTOR = 0.9  # 10% margin around map
+const ZOOM_FACTOR = 1.1
 const MIN_ZOOM = 0.1
 const MAX_ZOOM = 5000.0
-const ZOOM_STEP = 0.1
 const DEFAULT_ZOOM_CENTER = Vector2(0.5, 0.5)
 
 # Resource loaders
@@ -16,7 +16,7 @@ var geojson_loader = null
 var zoom_level = 1.0
 var min_zoom = MIN_ZOOM
 var max_zoom = MAX_ZOOM
-var zoom_step = ZOOM_STEP
+var zoom_factor = ZOOM_FACTOR
 var zoom_center = DEFAULT_ZOOM_CENTER
 var is_dragging = false
 var drag_start_position = Vector2()
@@ -97,26 +97,16 @@ func handle_left_mouse_button(event):
 
 func zoom_in(mouse_pos):
     if zoom_level < max_zoom:
-        # Convert mouse position to UV coordinates (0-1 range)
-        var viewport_size = get_viewport_rect().size
-        var mouse_uv = mouse_pos / viewport_size
-
-        # Calculate new zoom center to zoom toward mouse position
-        zoom_center = lerp(zoom_center, mouse_uv, 0.1)
-
         # Increase zoom level
-        zoom_level = min(zoom_level + zoom_step, max_zoom)
+        zoom_level = min(zoom_level * zoom_factor, max_zoom)
+
         material.set_shader_parameter("zoom_level", zoom_level)
         material.set_shader_parameter("zoom_center", zoom_center)
 
 func zoom_out(mouse_pos):
     if zoom_level > min_zoom:
         # Decrease zoom level
-        zoom_level = max(zoom_level - zoom_step, min_zoom)
-
-        # If we're at min zoom, reset center
-        if zoom_level == min_zoom:
-            zoom_center = DEFAULT_ZOOM_CENTER
+        zoom_level = max(zoom_level / zoom_factor, min_zoom)
 
         material.set_shader_parameter("zoom_level", zoom_level)
         material.set_shader_parameter("zoom_center", zoom_center)
@@ -125,8 +115,13 @@ func pan_map(current_mouse_pos):
     # Calculate mouse movement in viewport space
     var viewport_size = get_viewport_rect().size
 
-    # Reverse the direction by swapping positions
-    var movement = (drag_start_position - current_mouse_pos) / viewport_size
+    # Create movement vector
+    var movement = Vector2()
+    # For horizontal: drag right -> map moves right (direct relationship)
+    movement.x = (current_mouse_pos.x - drag_start_position.x) / viewport_size.x
+
+    # For vertical: drag down -> map moves up (inverted relationship)
+    movement.y = (drag_start_position.y - current_mouse_pos.y) / viewport_size.y
 
     # Adjust movement based on zoom level - panning should feel consistent at all zoom levels
     movement = movement / zoom_level
