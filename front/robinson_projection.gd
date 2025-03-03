@@ -8,35 +8,35 @@ const INTERVALS = 5.0
 func project_point(lon_lat: Vector2, central_meridian: float = 0.0) -> Vector2:
     var lon = lon_lat.x
     var lat = lon_lat.y
-    
+
     # Normalize longitude relative to central meridian
     lon = lon - central_meridian
     while lon > 180.0:
         lon -= 360.0
     while lon < -180.0:
         lon += 360.0
-    
+
     var phi = abs(lat) * PI / 180.0
     var i = int(phi * 180 / PI / INTERVALS)
     if i >= len(X) - 1:
         i = len(X) - 2
-        
+
     var fraction = (abs(lat) - i * INTERVALS) / INTERVALS
     var x = X[i] + fraction * (X[i + 1] - X[i])
     var y = Y[i] + fraction * (Y[i + 1] - Y[i])
-    
+
     # Adjust x based on longitude
     x = x * lon * PI / 180.0
-    
+
     # Adjust y sign based on latitude
     if lat < 0:
         y = -y
-        
+
     return Vector2(x, y)
 
 func project_polygon(polygon: Array, central_meridian: float = 0.0) -> Array:
     var projected = []
-    
+
     for point in polygon:
         # Try to handle coordinates that might be far outside normal range
         var lon = point.x
@@ -45,21 +45,43 @@ func project_polygon(polygon: Array, central_meridian: float = 0.0) -> Array:
             lon -= 360.0
         while lon < -180.0:
             lon += 360.0
-            
+
         var proj_point = project_point(Vector2(lon, point.y), 0.0)
         projected.append(proj_point)
-        
+
     return projected
+
+func calculate_robinson_boundary_polygon():
+    var boundary_points = []
+    var max_lat = 87.0  # Robinson projection typically cuts off around 87 degrees
+
+    # North edge (from west to east)
+    for lon in range(-180, 181, 5):
+        boundary_points.append(project_point(Vector2(lon, max_lat)))
+
+    # East edge (from north to south)
+    for lat in range(int(max_lat), -int(max_lat) - 1, -5):
+        boundary_points.append(project_point(Vector2(180, lat)))
+
+    # South edge (from east to west)
+    for lon in range(180, -181, -5):
+        boundary_points.append(project_point(Vector2(lon, -max_lat)))
+
+    # West edge (from south to north)
+    for lat in range(-int(max_lat), int(max_lat) + 1, 5):
+        boundary_points.append(project_point(Vector2(-180, lat)))
+
+    return boundary_points
 
 func project_polygon_continuous(polygon: Array, central_meridian: float = 0.0) -> Array:
     var projected = []
     var prev_point = null
     var prev_proj = null
-    
+
     # First pass: project all points
     for point in polygon:
         var proj = project_point(point, central_meridian)
-        
+
         if prev_point != null:
             # Check for longitude wrapping (a large jump in x value)
             # This indicates crossing the map boundary
@@ -69,33 +91,33 @@ func project_polygon_continuous(polygon: Array, central_meridian: float = 0.0) -
                 # If wrapping eastward
                 if prev_proj.x < 0 and proj.x > 0:
                     # Add an intermediate point at right edge
-                    projected.append(Vector2(1.0, prev_proj.y + (proj.y - prev_proj.y) * 
+                    projected.append(Vector2(1.0, prev_proj.y + (proj.y - prev_proj.y) *
                                         (1.0 - prev_proj.x) / (proj.x - prev_proj.x)))
                 # If wrapping westward
                 elif prev_proj.x > 0 and proj.x < 0:
                     # Add an intermediate point at left edge
-                    projected.append(Vector2(-1.0, prev_proj.y + (proj.y - prev_proj.y) * 
+                    projected.append(Vector2(-1.0, prev_proj.y + (proj.y - prev_proj.y) *
                                          (-1.0 - prev_proj.x) / (proj.x - prev_proj.x)))
-        
+
         projected.append(proj)
         prev_point = point
         prev_proj = proj
-    
+
     # Handle potential wrap between last and first point
     if polygon.size() > 0 and projected.size() > 0:
         var first_point = polygon[0]
         var last_point = polygon[polygon.size() - 1]
         var first_proj = projected[0]
         var last_proj = projected[projected.size() - 1]
-        
+
         var lon_diff = abs(first_point.x - last_point.x)
         if lon_diff > 180:
             # Similar handling for wrap between last and first point
             if last_proj.x < 0 and first_proj.x > 0:
-                projected.append(Vector2(1.0, last_proj.y + (first_proj.y - last_proj.y) * 
+                projected.append(Vector2(1.0, last_proj.y + (first_proj.y - last_proj.y) *
                                      (1.0 - last_proj.x) / (first_proj.x - last_proj.x)))
             elif last_proj.x > 0 and first_proj.x < 0:
-                projected.append(Vector2(-1.0, last_proj.y + (first_proj.y - last_proj.y) * 
+                projected.append(Vector2(-1.0, last_proj.y + (first_proj.y - last_proj.y) *
                                       (-1.0 - last_proj.x) / (first_proj.x - last_proj.x)))
-    
+
     return projected
